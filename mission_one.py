@@ -21,7 +21,8 @@ def mission_one(r: robot):
     # Your code goes here...
     # Sample Code: Run attachment motors and drive motors
     r.robot.straight(700)
-    r.robot.turn(60)
+    r.robot.turn(-60)
+    #r.robot.turn(60)
     r.robot.straight(300)
     #r.robot.straight(-95)
     #r.robot.turn(-140)

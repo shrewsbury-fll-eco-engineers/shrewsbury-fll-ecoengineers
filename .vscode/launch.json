@@ -13,7 +13,7 @@
         "ble",
         "--name",
         "Lucky Chicken",
-        "${workspaceFolder}/hardware_test.py"
+        "${workspaceFolder}/mission_two.py"
       ]
     },
     {
