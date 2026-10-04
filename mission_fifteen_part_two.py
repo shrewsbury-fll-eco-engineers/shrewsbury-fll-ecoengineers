@@ -1,11 +1,11 @@
 ################################################################################
-# mission_two.py
+# mission_fifteen_part_two.py
 #
 # Description:
-# [Describe What your mission does here]
+# Mission 15 part two - the other side, starting from the other home base.
 #
 # Author(s): [Your Name(s)]
-# Date: [YYYY-MM-DD]
+# Date: 2026-10-03
 # Version: 1.0
 #
 # Dependencies:
@@ -16,14 +16,17 @@
 from robot import robot
 from pybricks.tools import wait, StopWatch
 
-def mission_two(r: robot):
-    print("Running Mission 2")
+def mission_fifteen_part_two(r: robot):
+    print("Running Mission 15 part 2")
     r.robot.straight(150)
-    r.robot.turn(43)
-    r.lam.run_angle(300, 120)
-    r.robot.straight(225)
-    r.lam.run_angle(300, -120)
-    r.robot.straight(-500)
+    r.robot.turn(-50)
+    r.robot.straight(590)
+    r.robot.turn (-40)
+    r.robot.straight(100)
+    r.robot.straight(-50)
+    r.robot.turn(50)
+    r.robot.straight(-600)
+    r.robot.turn(100)
 ################################
 # KEEP THIS AT THE END OF THE FILE
 # This redirects to running main.
