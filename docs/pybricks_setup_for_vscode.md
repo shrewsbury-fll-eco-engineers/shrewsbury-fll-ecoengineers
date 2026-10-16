@@ -330,7 +330,7 @@ Current values (verified on lucky-chicken-2):
   - Left drive motor: Port B, COUNTERCLOCKWISE
   - Right drive motor: Port F, CLOCKWISE
   - Left / right attachment motors: Port A / Port E
-  - TIRE_DIAMETER = 56 mm, AXLE_TRACK = 113 mm
+  - TIRE_DIAMETER = 56 mm, AXLE_TRACK = 114 mm (56 x 28 black wheels, best value from a 104-119 mm sweep, even though a ruler says 119; the 56 x 14 blue wheels need 113; re-check AXLE_TRACK whenever you change wheels)
   - STRAIGHT_ACCEL = 500, TURN_ACCEL = 1000 (values above ~1000-10000 are rejected by Pybricks with "Invalid argument")
   - Gyro-assisted driving ON, HEADING_KP_MULTIPLIER = 8.0
 
@@ -364,3 +364,7 @@ Checking a robot (do this for each hub, e.g. lucky-chicken-1, 3, 4):
      If it is large, first check the front ball caster spins freely and is centered between the wheels,
      then raise HEADING_KP_MULTIPLIER (tested: 2 -> 20 mm, 4 -> 9 mm, 8 -> 3 mm on lucky-chicken-2).
 
+  f) Gyro calibration - each hub's gyro reads a little high or low. Line the robot up with a
+     tape line, run r.robot.turn(1800) (5 full turns), and see how far short or past the line it stops.
+     New value = old HEADING_CORRECTIONS value x 1800 / (1800 - degrees short), or + degrees past.
+     Add it to HEADING_CORRECTIONS in robot.py under the hub's name. Repeat until it lines up.

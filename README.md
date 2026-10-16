@@ -21,8 +21,9 @@ This project is intended to be developed locally in VS Code, largely replacing d
 |---|---|
 | Drive motors | Left = Port B (`COUNTERCLOCKWISE`), Right = Port F (`CLOCKWISE`) |
 | Attachment motors | Left = Port A, Right = Port E |
-| Wheels | 56 mm diameter, `AXLE_TRACK` 113 mm (measured 112 mm) |
+| Wheels | 56 x 28 mm black wheels; `AXLE_TRACK` 114 mm (best value from a 104-119 mm sweep; a ruler says 119 mm). The 56 x 14 blue wheels need 113 mm |
 | Driving | Gyro-assisted, `STRAIGHT_ACCEL` 500, heading gain x8 |
+| Gyro calibration | `HEADING_CORRECTIONS` in `robot.py`: lucky-chicken-2 = 363.7 (its gyro reads ~1% high); each hub needs its own value |
 | Layout | Two rear drive wheels + front ball caster |
 
 Sign convention: `straight(+)` drives **forward**, `turn(+)` turns **right** (clockwise).
@@ -38,11 +39,8 @@ Measured accuracy: 300 mm commanded = ~300 mm driven; 90° turns within 1°; 3 m
 | D-pad Up / Down | Drive forward / backward |
 | D-pad Right / Left | Turn right / left in place |
 | RB / LB | Left attachment motor forward / backward |
-| X / B | Right attachment motor forward / backward |
 | Y | Start / stop recording (prints mission code when stopped) |
 | A | Replay the last recording |
-| LT | Run `recorded_mission.py` |
-| RT | Run `robot_check.py` (clear the area before starting) |
 
 ## Other robots
 

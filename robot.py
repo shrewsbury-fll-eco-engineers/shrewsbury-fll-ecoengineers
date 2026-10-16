@@ -176,8 +176,15 @@ else:
 #   r.robot.drive()
 TIRE_DIAMETER: int = 56  # mm
 AXLE_TRACK: int = 113  # mm; gyro-calibrated on lucky-chicken-2 (was 130, over-rotated turns ~15%)
-STRAIGHT_SPEED: float = 250 / 360 * umath.pi * TIRE_DIAMETER  # mm/sec; matches recorded mission wheel speed
+STRAIGHT_SPEED: int = 300  # mm/sec
 STRAIGHT_ACCEL: int = 500  # mm/sec^2 — gentler start/stop reduces ball-caster push drift (tested on lucky-chicken-2)
+# Gyro calibration per hub: degrees the gyro reports for one REAL full turn.
+# Each hub's gyro is slightly different. Measure by spinning 5 full turns
+# and checking how far short/past the start line the robot stops.
+# lucky-chicken-2 read ~0.8% high (5 gyro turns fell ~15 deg short).
+HEADING_CORRECTIONS: dict = {
+    "lucky-chicken-2": 363.7,
+}
 HEADING_KP_MULTIPLIER: float = 8.0  # strong gyro heading hold; 8x gave least drift and least oscillation (lucky-chicken-2)
 TURN_RATE: int = 45  # deg/sec
 TURN_ACCEL: int = 1000  # deg/sec^2 — same platform cap as STRAIGHT_ACCEL
@@ -218,7 +225,7 @@ PORT_MAPPING: dict[str, Port] = {
 #         |     <-()->    |             
 #          ---------------
 #               BOTTOM
-DISPLAY_ORIENTATION: Side = Side.BOTTOM
+DISPLAY_ORIENTATION: Side = Side.TOP
 
 #############################################
 # Define Forward (Positive) Rotation For Each Motor
@@ -322,6 +329,11 @@ class robot:
             self.hub = PrimeHub(top_side=Axis.Z, front_side=-Axis.Y)  # pyright: ignore
             self.hub.display.orientation(self.display_orientation)
             self.hub.speaker.volume(50)
+            # Apply this hub's gyro calibration (saved on the hub too, but
+            # re-applying keeps it correct after firmware updates/resets).
+            correction = HEADING_CORRECTIONS.get(self.hub.system.name())
+            if correction and self.hub.imu.settings()[-1] != correction:
+                self.hub.imu.settings(heading_correction=correction)
         except Exception as e:
             print("Hub initialization error", e)
             raise
@@ -418,11 +430,31 @@ class robot:
             self._straight_drive_active = False
             return
 
-        if not self._straight_drive_active:
-            self.robot.reset()
-            self._straight_drive_active = True
-
+        # Do NOT call self.robot.reset() here. With gyro driving on, reset()
+        # zeroes the drive base angle while the gyro still reads the last
+        # turn, so the robot swings back to its pre-turn heading (measured:
+        # -46 deg while backing up after a 45 deg turn). drive() already
+        # holds the heading the robot has right now.
+        self._straight_drive_active = True
         self.robot.drive(speed, 0)
+
+    def face(self, target):
+        """Turn in place until the gyro reads the target heading (degrees).
+
+        Used by recorded missions: face(start + 52.3) turns to 52.3 degrees
+        from the heading the mission started at.
+        """
+        error = target - self.hub.imu.heading()
+        if abs(error) >= 0.5:
+            self.robot.reset(0, self.hub.imu.heading())
+            self.robot.turn(error)
+        # Hold this heading on the next straight.
+        self.robot.reset(0, self.hub.imu.heading())
+
+    def brake_drive(self):
+        """Stop driving by braking (quicker, crisper stop than stop_drive)."""
+        self.robot.brake()
+        self._straight_drive_active = False
 
     def stop_drive(self):
         """Stop driving and require a new heading reference next time."""
