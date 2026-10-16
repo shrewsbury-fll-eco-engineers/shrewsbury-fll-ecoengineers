@@ -1,0 +1,3 @@
+# Python 3.14
+pybricks==4.0.0
+pybricksdev==2.3.2
