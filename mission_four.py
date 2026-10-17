@@ -26,11 +26,11 @@ def mission_four(r: robot):
     r.lam.run_time(20,1000)
     r.robot.straight(37)
     #r.robot.drive(0,10)
-    r.lam.run_time(80,1000)
+    r.lam.run_time(83,1000)
     r.robot.straight(-37)
     r.robot.turn(26.7)
     r.robot.straight(-740)
-    r.lam.run_time(-80,1000)
+    r.lam.run_time(-83,1000)
     #r.robot.stop()
 ################################
 # KEEP THIS AT THE END OF THE FILE
