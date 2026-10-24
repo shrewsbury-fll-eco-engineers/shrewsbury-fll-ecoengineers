@@ -20,10 +20,11 @@ def mission_four(r: robot):
     print("Running Mission 4")
     # Your code goes here...
     # Sample code: Test the speaker
+    r.robot.use_gyro(True)
     r.robot.settings(straight_speed=200, straight_acceleration=400, turn_rate=120, turn_acceleration=240)
     r.robot.straight(740)
     r.robot.turn(-26.7)
-    r.lam.run_time(20,1000)
+    r.lam.run_time(80,400)
     r.robot.straight(37)
     #r.robot.drive(0,10)
     r.lam.run_time(83,1000)
