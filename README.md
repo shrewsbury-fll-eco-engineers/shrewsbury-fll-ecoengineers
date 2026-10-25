@@ -3,6 +3,12 @@ ECO Engineers' Pybricks SPIKE Prime base code.
 
 This project is intended to be developed locally in VS Code, largely replacing day-to-day use of the Pybricks WebIDE; see [docs/pybricks_setup_for_vscode.md](docs/pybricks_setup_for_vscode.md) for setup instructions.
 
+## Bee & Harvest Lab
+
+Explore the interactive farm simulation on the [Bee & Harvest Lab website](https://shrewsbury-fll-eco-engineers.github.io/shrewsbury-fll-ecoengineers/).
+
+GitHub Pages publishes only the simulation as the site homepage. To enable deployment, set **Settings → Pages → Build and deployment → Source** to **GitHub Actions**. Merging the deployment workflow to `main` publishes the site and future simulation updates.
+
 ## Files
 
 | File | Purpose |

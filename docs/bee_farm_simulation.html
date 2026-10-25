@@ -1,0 +1,957 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7ef">
+  <title>Bee &amp; Harvest Lab</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #243729;
+      --muted: #6c796b;
+      --line: #dce5d6;
+      --paper: #fffefa;
+      --green: #37734b;
+      --green-dark: #27563a;
+      --lime: #d8eb86;
+      --yellow: #f3c64e;
+      --blue: #dcecf0;
+      --shadow: 0 18px 48px rgba(47, 75, 48, .09);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(ellipse at 12% 0%, rgba(216, 235, 134, .28), transparent 28rem),
+        #f5f7ef;
+      color: var(--ink);
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    button, input { font: inherit; }
+
+    .page {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 42px 0 32px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 12px;
+      color: var(--green);
+      font-size: .74rem;
+      font-weight: 800;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      width: 22px;
+      height: 2px;
+      background: var(--yellow);
+      content: "";
+    }
+
+    h1, h2, p { margin-top: 0; }
+
+    h1 {
+      margin-bottom: 9px;
+      font-size: clamp(2rem, 4vw, 3.3rem);
+      letter-spacing: -.055em;
+      line-height: 1.08;
+    }
+
+    .intro {
+      max-width: 650px;
+      margin-bottom: 27px;
+      color: var(--muted);
+      font-size: 1.02rem;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: minmax(0, 1.55fr) minmax(300px, .9fr);
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .farm-card { display: flex; flex-direction: column; }
+
+    .farm-head, .panel-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      padding: 20px 22px 16px;
+    }
+
+    .farm-head h2, .panel-head h2 {
+      margin: 0;
+      font-size: 1.05rem;
+      letter-spacing: -.02em;
+    }
+
+    .season {
+      flex-shrink: 0;
+      padding: 6px 10px;
+      border: 1px solid #e7ebd2;
+      border-radius: 999px;
+      background: #f5f7e9;
+      color: #536c43;
+      font-size: .78rem;
+      font-weight: 800;
+    }
+
+    .farm-scene {
+      position: relative;
+      min-height: 278px;
+      overflow: hidden;
+      background: linear-gradient(#dcecf0 0 57%, #c8e2b7 57% 100%);
+      isolation: isolate;
+    }
+
+    .sun {
+      position: absolute;
+      top: 25px;
+      right: 54px;
+      width: 49px;
+      height: 49px;
+      border-radius: 50%;
+      background: #f5ce64;
+      box-shadow: 0 0 0 11px rgba(255, 237, 174, .34);
+    }
+
+    .cloud {
+      position: absolute;
+      top: 45px;
+      left: 12%;
+      width: 76px;
+      height: 20px;
+      border-radius: 99px;
+      background: rgba(255, 255, 255, .8);
+    }
+
+    .cloud::before, .cloud::after {
+      position: absolute;
+      bottom: 5px;
+      border-radius: 50%;
+      background: inherit;
+      content: "";
+    }
+
+    .cloud::before { left: 14px; width: 28px; height: 28px; }
+    .cloud::after { right: 12px; width: 22px; height: 22px; }
+
+    .hill {
+      position: absolute;
+      z-index: -1;
+      right: -7%;
+      bottom: 66px;
+      left: -7%;
+      height: 95px;
+      border-radius: 50% 50% 0 0 / 55% 55% 0 0;
+      background: #a7cb8e;
+    }
+
+    .orchard {
+      position: absolute;
+      right: 5%;
+      bottom: 106px;
+      display: flex;
+      gap: clamp(10px, 3vw, 34px);
+      align-items: flex-end;
+    }
+
+    .tree {
+      position: relative;
+      width: 53px;
+      height: 74px;
+    }
+
+    .tree::before {
+      position: absolute;
+      bottom: 0;
+      left: 22px;
+      width: 10px;
+      height: 35px;
+      border-radius: 5px 5px 2px 2px;
+      background: #93684a;
+      content: "";
+    }
+
+    .tree::after {
+      position: absolute;
+      top: 0;
+      left: 1px;
+      width: 51px;
+      height: 48px;
+      border-radius: 47% 53% 48% 52%;
+      background: #4b8753;
+      box-shadow: 12px 9px 0 -2px #5b995b, -8px 12px 0 -4px #6ca765;
+      content: "";
+    }
+
+    .fruit {
+      position: absolute;
+      z-index: 1;
+      top: 23px;
+      left: 15px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #e27654;
+      box-shadow: 18px 6px #f0c64e, 8px 21px #df7651;
+    }
+
+    .orchard .tree:nth-child(2) .fruit { background: #bf7762; }
+    .orchard .tree:nth-child(3) .fruit { background: #d46655; }
+
+    .field {
+      position: absolute;
+      right: -4%;
+      bottom: 0;
+      left: -4%;
+      height: 103px;
+      overflow: hidden;
+      border-radius: 50% 50% 0 0 / 20% 20% 0 0;
+      background: #83ad63;
+    }
+
+    .crop-row {
+      position: absolute;
+      right: 7%;
+      bottom: -43px;
+      left: 7%;
+      display: flex;
+      justify-content: space-around;
+      height: 95px;
+      border-radius: 50% 50% 0 0;
+      background: repeating-linear-gradient(90deg, #9d754c 0 15px, #ae8456 15px 29px);
+      transform: perspective(120px) rotateX(12deg);
+    }
+
+    .plant {
+      position: relative;
+      top: -13px;
+      width: 5px;
+      height: 26px;
+      border-radius: 4px;
+      background: #477c46;
+    }
+
+    .plant::before, .plant::after {
+      position: absolute;
+      top: 6px;
+      width: 11px;
+      height: 6px;
+      border-radius: 100% 0 100% 0;
+      background: #548c4c;
+      content: "";
+    }
+
+    .plant::before { right: 2px; transform: rotate(14deg); }
+    .plant::after { left: 2px; transform: scaleX(-1) rotate(14deg); }
+
+    #bee-flock { position: absolute; z-index: 2; inset: 0; pointer-events: none; }
+
+    .bee {
+      position: absolute;
+      width: 32px;
+      height: 28px;
+      opacity: 1;
+      transition: opacity .45s ease, filter .45s ease;
+      animation-duration: var(--flight-duration, 7s);
+      animation-delay: var(--flight-delay, 0s);
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+      animation-direction: alternate;
+      will-change: transform;
+    }
+
+    .bee.is-hidden { opacity: .12; filter: grayscale(.8); }
+    .bee:nth-child(1) { top: 39%; left: 24%; animation-name: flight-a; }
+    .bee:nth-child(2) { top: 54%; left: 39%; animation-name: flight-b; }
+    .bee:nth-child(3) { top: 33%; left: 53%; animation-name: flight-c; }
+    .bee:nth-child(4) { top: 54%; left: 68%; animation-name: flight-a; }
+    .bee:nth-child(5) { top: 29%; left: 36%; animation-name: flight-b; }
+    .bee:nth-child(6) { top: 43%; left: 77%; animation-name: flight-c; }
+    .bee:nth-child(7) { top: 49%; left: 57%; animation-name: flight-b; }
+    .bee:nth-child(8) { top: 35%; left: 15%; animation-name: flight-c; }
+
+    .bee-body {
+      position: absolute;
+      top: 10px;
+      left: 5px;
+      width: 23px;
+      height: 13px;
+      border: 1px solid rgba(80, 61, 28, .26);
+      border-radius: 55% 48% 48% 55%;
+      background: linear-gradient(90deg, #344035 0 17%, #f6c744 17% 39%, #344035 39% 55%, #f6c744 55% 77%, #344035 77%);
+      box-shadow: 0 3px 5px rgba(45, 59, 38, .2);
+    }
+
+    .bee-body::before {
+      position: absolute;
+      top: 3px;
+      right: 3px;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: #fff9dc;
+      content: "";
+    }
+
+    .bee-body::after {
+      position: absolute;
+      top: 3px;
+      left: -4px;
+      width: 5px;
+      height: 7px;
+      background: #344035;
+      clip-path: polygon(100% 0, 100% 100%, 0 50%);
+      content: "";
+    }
+
+    .bee-wing {
+      position: absolute;
+      z-index: -1;
+      top: 5px;
+      width: 10px;
+      height: 9px;
+      border: 1px solid rgba(116, 150, 148, .35);
+      border-radius: 80% 80% 45% 80%;
+      background: rgba(255, 255, 255, .88);
+      transform-origin: bottom center;
+      animation: wing-flap .13s ease-in-out infinite alternate;
+    }
+
+    .bee-wing--near { left: 10px; }
+    .bee-wing--far { top: 4px; left: 15px; width: 8px; height: 7px; opacity: .75; animation-delay: -.07s; }
+
+    @keyframes wing-flap {
+      from { transform: rotate(-28deg) scaleY(.75); }
+      to { transform: rotate(28deg) scaleY(1.12); }
+    }
+
+    @keyframes flight-a {
+      0% { transform: translate(0, 0) rotate(-8deg); }
+      35% { transform: translate(35px, -18px) rotate(10deg); }
+      68% { transform: translate(66px, 7px) rotate(-3deg); }
+      100% { transform: translate(28px, 22px) rotate(12deg); }
+    }
+
+    @keyframes flight-b {
+      0% { transform: translate(0, 0) rotate(8deg); }
+      30% { transform: translate(-27px, -24px) rotate(-10deg); }
+      70% { transform: translate(24px, -38px) rotate(5deg); }
+      100% { transform: translate(55px, -8px) rotate(-8deg); }
+    }
+
+    @keyframes flight-c {
+      0% { transform: translate(0, 0) rotate(-5deg); }
+      32% { transform: translate(-35px, 19px) rotate(12deg); }
+      66% { transform: translate(-12px, -30px) rotate(-12deg); }
+      100% { transform: translate(36px, -16px) rotate(6deg); }
+    }
+
+    .scene-caption {
+      position: absolute;
+      bottom: 12px;
+      left: 18px;
+      color: #fff;
+      font-size: .76rem;
+      font-weight: 800;
+      text-shadow: 0 1px 4px rgba(32, 54, 31, .65);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--line);
+    }
+
+    .stat {
+      padding: 15px 16px 17px;
+    }
+
+    .stat + .stat { border-left: 1px solid var(--line); }
+
+    .stat-label {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--muted);
+      font-size: .75rem;
+      font-weight: 700;
+    }
+
+    .stat-value {
+      display: block;
+      font-size: clamp(1.12rem, 2.4vw, 1.55rem);
+      font-weight: 900;
+      letter-spacing: -.04em;
+      line-height: 1.2;
+    }
+
+    .stat-note { color: var(--muted); font-size: .72rem; }
+
+    .control-card { padding-bottom: 18px; }
+
+    .panel-head {
+      align-items: flex-start;
+      padding-bottom: 9px;
+    }
+
+    .panel-head p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: .82rem;
+    }
+
+    .control-body { padding: 10px 22px 0; }
+
+    .range-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: baseline;
+      margin-bottom: 7px;
+    }
+
+    .range-head label { font-size: .87rem; font-weight: 800; }
+    .range-value { color: #8b5737; font-size: .88rem; font-weight: 900; }
+
+    input[type="range"] {
+      width: 100%;
+      height: 8px;
+      margin: 5px 0 4px;
+      border-radius: 99px;
+      background: linear-gradient(90deg, #8dbb73, #f2c654, #d78456);
+      appearance: none;
+      cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      width: 21px;
+      height: 21px;
+      border: 3px solid #fff;
+      border-radius: 50%;
+      background: var(--green-dark);
+      box-shadow: 0 1px 5px rgba(30, 60, 36, .35);
+      appearance: none;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      border: 3px solid #fff;
+      border-radius: 50%;
+      background: var(--green-dark);
+      box-shadow: 0 1px 5px rgba(30, 60, 36, .35);
+    }
+
+    .range-ends {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: .7rem;
+    }
+
+    .cause-chain {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      margin: 18px 0;
+      color: var(--green-dark);
+      font-size: .73rem;
+      font-weight: 800;
+    }
+
+    .cause-chain span:not(.arrow) {
+      padding: 5px 8px;
+      border-radius: 7px;
+      background: #eef4e9;
+    }
+
+    .cause-chain .arrow { color: #9ba68f; }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    button {
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: #fff;
+      color: var(--ink);
+      cursor: pointer;
+      font-size: .82rem;
+      font-weight: 800;
+      transition: background .15s ease, transform .15s ease, border-color .15s ease;
+    }
+
+    button:hover { border-color: #a9c49a; background: #f4f8ef; }
+    button:active { transform: translateY(1px); }
+    button:focus-visible, input:focus-visible { outline: 3px solid #b3d48e; outline-offset: 3px; }
+
+    button.primary {
+      grid-column: 1 / -1;
+      border-color: var(--green-dark);
+      background: var(--green-dark);
+      color: white;
+    }
+
+    button.primary:hover { background: #1d452e; }
+
+    .model-note {
+      margin: 15px 22px 0;
+      padding: 11px 12px;
+      border-left: 3px solid var(--yellow);
+      border-radius: 0 8px 8px 0;
+      background: #fbf8eb;
+      color: #69705b;
+      font-size: .73rem;
+    }
+
+    .harvest-card { margin-top: 18px; }
+
+    .harvest-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      align-items: baseline;
+      padding: 19px 22px 8px;
+    }
+
+    .harvest-head h2 { margin: 0; font-size: 1.05rem; }
+    .harvest-head span { color: var(--muted); font-size: .75rem; }
+
+    .crops {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      padding: 8px 12px 16px;
+    }
+
+    .crop {
+      padding: 10px 12px;
+    }
+
+    .crop + .crop { border-left: 1px solid var(--line); }
+
+    .crop-name {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 5px;
+      font-size: .82rem;
+      font-weight: 800;
+    }
+
+    .crop-yield {
+      margin-bottom: 8px;
+      font-size: 1.18rem;
+      font-weight: 900;
+      letter-spacing: -.04em;
+    }
+
+    .crop-yield small { color: var(--muted); font-size: .68rem; font-weight: 600; letter-spacing: 0; }
+
+    .bar {
+      height: 7px;
+      overflow: hidden;
+      border-radius: 99px;
+      background: #edf0e9;
+    }
+
+    .bar-fill {
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #a8cb76, #4c8a53);
+      transition: width .45s ease;
+    }
+
+    .chart-section {
+      padding: 14px 20px 18px;
+      border-top: 1px solid var(--line);
+    }
+
+    .chart-heading {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: baseline;
+      margin-bottom: 5px;
+    }
+
+    .chart-heading h3 { margin: 0; font-size: .9rem; }
+    .chart-heading span { color: var(--muted); font-size: .7rem; }
+    .chart-wrap { width: 100%; }
+    .chart-wrap svg { display: block; width: 100%; height: auto; overflow: visible; }
+    .chart-grid { stroke: #e5eadf; stroke-width: 1; }
+    .chart-axis { fill: #758071; font: 11px "Trebuchet MS", "Segoe UI", sans-serif; }
+    .chart-series { fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+    .chart-point { stroke: #fffefa; stroke-width: 2; }
+    .chart-legend { display: flex; flex-wrap: wrap; gap: 8px 18px; padding: 4px 2px 0; }
+    .chart-legend-item { display: inline-flex; gap: 6px; align-items: center; color: var(--muted); font-size: .72rem; font-weight: 700; }
+    .chart-key { width: 9px; height: 9px; border-radius: 50%; }
+
+    .takeaway {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin-top: 18px;
+      padding: 15px 18px;
+      border: 1px solid #dbe7d0;
+      border-radius: 15px;
+      background: #edf4e8;
+      color: #456043;
+      font-size: .87rem;
+    }
+
+    .takeaway-icon { font-size: 1.18rem; line-height: 1.1; }
+    .takeaway strong { color: #294a34; }
+
+    .footer {
+      margin-top: 16px;
+      color: #849080;
+      font-size: .7rem;
+      text-align: center;
+    }
+
+    @media (max-width: 760px) {
+      .page { width: min(100% - 24px, 560px); padding-top: 28px; }
+      .dashboard { grid-template-columns: 1fr; }
+      .farm-scene { min-height: 250px; }
+      .harvest-card { margin-top: 14px; }
+    }
+
+    @media (max-width: 500px) {
+      .stats { grid-template-columns: 1fr; }
+      .stat { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 10px 15px; }
+      .stat + .stat { border-top: 1px solid var(--line); border-left: 0; }
+      .stat-label { margin: 0; }
+      .stat-note { margin-left: auto; }
+      .crops { grid-template-columns: 1fr 1fr; }
+      .crop:nth-child(3) { border-top: 1px solid var(--line); border-left: 0; }
+      .crop:nth-child(4) { border-top: 1px solid var(--line); }
+      .harvest-head { padding-right: 16px; padding-left: 16px; }
+      .farm-head, .panel-head { padding-right: 17px; padding-left: 17px; }
+      .control-body { padding-right: 17px; padding-left: 17px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">Pollinator field study</p>
+    <h1>Bee &amp; Harvest Lab</h1>
+    <p class="intro">Explore how pesticide use can affect bees, pollination, and the food grown on a fruit, nut, berry, and seed farm.</p>
+
+    <section class="dashboard" aria-label="Farm simulation">
+      <article class="card farm-card" aria-labelledby="farm-title">
+        <div class="farm-head">
+          <h2 id="farm-title">The farm ecosystem</h2>
+          <span class="season" id="season-label">Season 1</span>
+        </div>
+        <div class="farm-scene" role="img" aria-label="Illustrated farm with an orchard, crop rows, and bees">
+          <div class="sun"></div>
+          <div class="cloud"></div>
+          <div class="hill"></div>
+          <div class="orchard" aria-hidden="true">
+            <div class="tree"><i class="fruit"></i></div>
+            <div class="tree"><i class="fruit"></i></div>
+            <div class="tree"><i class="fruit"></i></div>
+          </div>
+          <div class="field" aria-hidden="true">
+            <div class="crop-row">
+              <i class="plant"></i><i class="plant"></i><i class="plant"></i><i class="plant"></i>
+              <i class="plant"></i><i class="plant"></i><i class="plant"></i><i class="plant"></i>
+              <i class="plant"></i><i class="plant"></i><i class="plant"></i><i class="plant"></i>
+            </div>
+          </div>
+          <div id="bee-flock" aria-hidden="true"></div>
+          <span class="scene-caption">A little more habitat can make a big difference</span>
+        </div>
+        <div class="stats" aria-live="polite">
+          <div class="stat">
+            <span class="stat-label">Bee population</span>
+            <strong class="stat-value" id="bee-count">420</strong>
+            <span class="stat-note">bees (model)</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Pollination</span>
+            <strong class="stat-value" id="pollination">42%</strong>
+            <span class="stat-note">of farm potential</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Food harvested</span>
+            <strong class="stat-value" id="total-yield">—</strong>
+            <span class="stat-note">kg / season</span>
+          </div>
+        </div>
+      </article>
+
+      <aside class="card control-card" aria-labelledby="controls-title">
+        <div class="panel-head">
+          <div>
+            <h2 id="controls-title">Change farm practices</h2>
+            <p>Adjust pesticide use, then watch what happens.</p>
+          </div>
+        </div>
+        <div class="control-body">
+          <div class="range-head">
+            <label for="pesticide">Pesticide use</label>
+            <output class="range-value" id="pesticide-value" for="pesticide">60%</output>
+          </div>
+          <input id="pesticide" type="range" min="0" max="100" value="60" step="1" aria-describedby="range-description">
+          <div class="range-ends" id="range-description">
+            <span>Less use</span><span>More use</span>
+          </div>
+          <div class="cause-chain" aria-label="Lower pesticide use leads to more bees, more pollination, and more food">
+            <span>Less pesticide</span><span class="arrow" aria-hidden="true">→</span>
+            <span>More bees</span><span class="arrow" aria-hidden="true">→</span>
+            <span>More pollination</span><span class="arrow" aria-hidden="true">→</span>
+            <span>More food</span>
+          </div>
+          <div class="actions">
+            <button class="primary" id="advance-button" type="button">Advance one season</button>
+            <button id="run-button" type="button" aria-pressed="false">Run simulation</button>
+            <button id="reset-button" type="button">Reset</button>
+          </div>
+        </div>
+        <p class="model-note">This is a simplified learning model, not farm data. Each season, bee populations move toward a pesticide-dependent habitat target; food output rises as pollination improves.</p>
+      </aside>
+    </section>
+
+    <section class="card harvest-card" aria-labelledby="harvest-title">
+      <div class="harvest-head">
+        <h2 id="harvest-title">Farm food output</h2>
+        <span>Illustrative kilograms per season</span>
+      </div>
+      <div class="crops" id="crop-results" aria-live="polite"></div>
+      <div class="chart-section">
+        <div class="chart-heading">
+          <h3>Harvest history</h3>
+          <span>Each line shows a crop's kg per season</span>
+        </div>
+        <div class="chart-wrap" id="output-chart"></div>
+      </div>
+    </section>
+
+    <div class="takeaway" role="status">
+      <span class="takeaway-icon" aria-hidden="true">✿</span>
+      <div id="takeaway-text"><strong>Try an experiment:</strong> lower pesticide use, then advance a few seasons. Watch the bee population, pollination, and harvest change together.</div>
+    </div>
+    <p class="footer">Explore the connections. Compare different farm choices. See how the ecosystem responds.</p>
+  </main>
+
+  <script>
+    (() => {
+      const initial = { pesticide: 60, bees: 420, season: 1 };
+      const crops = [
+        { name: "Fruit", potential: 90, dependency: 0.82 },
+        { name: "Nuts", potential: 55, dependency: 1.08 },
+        { name: "Berries", potential: 75, dependency: 0.92 },
+        { name: "Seeds", potential: 60, dependency: 1.15 }
+      ];
+      const cropColors = ["#df7956", "#9a78b5", "#d19b38", "#4c8a53"];
+      const state = { ...initial, timer: null };
+      const history = [];
+      const $ = (id) => document.getElementById(id);
+      const pesticideSlider = $("pesticide");
+
+      function clamp(value, min, max) {
+        return Math.min(max, Math.max(min, value));
+      }
+
+      function populationTarget() {
+        const lowPesticideShare = 1 - state.pesticide / 100;
+        return Math.round(140 + 860 * Math.pow(lowPesticideShare, 1.25));
+      }
+
+      function setupBees() {
+        $("bee-flock").innerHTML = Array.from({ length: 8 }, (_, index) =>
+          `<span class="bee" style="--flight-duration:${6 + index % 3 * 1.4}s;--flight-delay:${-index * .83}s">
+            <i class="bee-wing bee-wing--far"></i>
+            <i class="bee-wing bee-wing--near"></i>
+            <i class="bee-body"></i>
+          </span>`
+        ).join("");
+      }
+
+      function renderChart(harvests) {
+        const entry = { season: state.season, values: harvests.map((crop) => crop.amount) };
+        const lastEntry = history[history.length - 1];
+        if (lastEntry && lastEntry.season === state.season) {
+          history[history.length - 1] = entry;
+        } else {
+          history.push(entry);
+        }
+
+        const visibleHistory = history.slice(-12);
+        const width = 760;
+        const height = 270;
+        const left = 48;
+        const right = 744;
+        const top = 18;
+        const bottom = 216;
+        const plotWidth = right - left;
+        const plotHeight = bottom - top;
+        const xFor = (index) => left + (visibleHistory.length === 1
+          ? plotWidth / 2
+          : plotWidth * index / (visibleHistory.length - 1));
+        const yFor = (value) => bottom - value / 100 * plotHeight;
+        const yTicks = [0, 25, 50, 75, 100];
+        const labelStep = Math.max(1, Math.ceil((visibleHistory.length - 1) / 5));
+        const xLabelIndices = visibleHistory
+          .map((_, index) => index)
+          .filter((index) => index % labelStep === 0 || index === visibleHistory.length - 1);
+
+        const grid = yTicks.map((tick) => `
+          <line class="chart-grid" x1="${left}" y1="${yFor(tick)}" x2="${right}" y2="${yFor(tick)}"></line>
+          <text class="chart-axis" x="${left - 9}" y="${yFor(tick) + 4}" text-anchor="end">${tick}</text>
+        `).join("");
+        const xLabels = xLabelIndices.map((index) => `
+          <text class="chart-axis" x="${xFor(index)}" y="${bottom + 21}" text-anchor="middle">
+            ${visibleHistory[index].season}
+          </text>
+        `).join("");
+        const series = crops.map((crop, cropIndex) => {
+          const points = visibleHistory.map((item, index) =>
+            `${xFor(index)},${yFor(item.values[cropIndex])}`
+          ).join(" ");
+          const dots = visibleHistory.map((item, index) => `
+            <circle class="chart-point" cx="${xFor(index)}" cy="${yFor(item.values[cropIndex])}" r="3.5" fill="${cropColors[cropIndex]}">
+              <title>Season ${item.season}: ${crop.name} ${item.values[cropIndex]} kg</title>
+            </circle>
+          `).join("");
+          return `<polyline class="chart-series" stroke="${cropColors[cropIndex]}" points="${points}"></polyline>${dots}`;
+        }).join("");
+        const legend = crops.map((crop, index) => `
+          <span class="chart-legend-item"><i class="chart-key" style="background:${cropColors[index]}"></i>${crop.name}</span>
+        `).join("");
+
+        $("output-chart").innerHTML = `
+          <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Line graph of fruit, nut, berry, and seed harvests in kilograms per season">
+            <text class="chart-axis" x="${left}" y="11">kg</text>
+            ${grid}
+            <line class="chart-grid" x1="${left}" y1="${top}" x2="${left}" y2="${bottom}"></line>
+            <line class="chart-grid" x1="${left}" y1="${bottom}" x2="${right}" y2="${bottom}"></line>
+            ${series}
+            ${xLabels}
+            <text class="chart-axis" x="${(left + right) / 2}" y="${height - 5}" text-anchor="middle">Season</text>
+          </svg>
+          <div class="chart-legend" aria-hidden="true">${legend}</div>
+        `;
+      }
+
+      function render() {
+        const pollination = clamp(state.bees / 1000, 0, 1);
+        const harvests = crops.map((crop) => {
+          const yieldShare = 0.12 + 0.88 * Math.pow(pollination, crop.dependency);
+          return { ...crop, amount: Math.round(crop.potential * yieldShare) };
+        });
+        const total = harvests.reduce((sum, crop) => sum + crop.amount, 0);
+
+        $("season-label").textContent = `Season ${state.season}`;
+        $("bee-count").textContent = state.bees.toLocaleString();
+        $("pollination").textContent = `${Math.round(pollination * 100)}%`;
+        $("total-yield").textContent = total.toLocaleString();
+        $("pesticide-value").textContent = `${state.pesticide}%`;
+        $("crop-results").innerHTML = harvests.map((crop) => `
+          <div class="crop">
+            <div class="crop-name"><span>${crop.name}</span></div>
+            <div class="crop-yield">${crop.amount} <small>kg</small></div>
+            <div class="bar" role="img" aria-label="${crop.name}: ${crop.amount} kilograms">
+              <div class="bar-fill" style="width: ${Math.round(crop.amount / crop.potential * 100)}%"></div>
+            </div>
+          </div>
+        `).join("");
+
+        const visibleBees = Math.ceil(pollination * 8);
+        $("bee-flock").querySelectorAll(".bee").forEach((bee, index) => {
+          bee.classList.toggle("is-hidden", index >= visibleBees);
+        });
+        renderChart(harvests);
+
+        const target = populationTarget();
+        const trend = target > state.bees + 20
+          ? "Bee numbers are building toward a healthier habitat level."
+          : target < state.bees - 20
+            ? "Bee numbers are trending down toward the habitat level."
+            : "Bee numbers are close to this farm's current habitat level.";
+        $("takeaway-text").innerHTML = `<strong>${trend}</strong> Pollination is ${Math.round(pollination * 100)}% of this model's potential, supporting ${total} kg of food this season.`;
+      }
+
+      function advanceSeason() {
+        const target = populationTarget();
+        state.bees = Math.round(state.bees + (target - state.bees) * 0.38);
+        if (Math.abs(target - state.bees) < 5) state.bees = target;
+        state.season += 1;
+        render();
+      }
+
+      function stopSimulation() {
+        if (state.timer !== null) {
+          window.clearInterval(state.timer);
+          state.timer = null;
+        }
+        $("run-button").textContent = "Run simulation";
+        $("run-button").setAttribute("aria-pressed", "false");
+      }
+
+      pesticideSlider.addEventListener("input", () => {
+        state.pesticide = Number(pesticideSlider.value);
+        render();
+      });
+
+      $("advance-button").addEventListener("click", advanceSeason);
+      $("run-button").addEventListener("click", () => {
+        if (state.timer !== null) {
+          stopSimulation();
+          return;
+        }
+        $("run-button").textContent = "Pause simulation";
+        $("run-button").setAttribute("aria-pressed", "true");
+        state.timer = window.setInterval(advanceSeason, 850);
+      });
+
+      $("reset-button").addEventListener("click", () => {
+        stopSimulation();
+        state.pesticide = initial.pesticide;
+        state.bees = initial.bees;
+        state.season = initial.season;
+        history.length = 0;
+        pesticideSlider.value = String(initial.pesticide);
+        render();
+      });
+
+      setupBees();
+      render();
+    })();
+  </script>
+</body>
+</html>
