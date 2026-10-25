@@ -36,7 +36,7 @@ def mission_five(r: robot):
     r.robot.straight(750)
     r.robot.reset(0, 0)
     wait(100)
-    r.robot.settings(straight_speed=40, straight_acceleration=80, turn_rate=110, turn_acceleration=220)
+    r.robot.settings(straight_speed=300, straight_acceleration=400, turn_rate=110, turn_acceleration=220)#40 is working slow speed
     wait(100)
     r.ram.run_angle(40, -70)
     wait(100)
