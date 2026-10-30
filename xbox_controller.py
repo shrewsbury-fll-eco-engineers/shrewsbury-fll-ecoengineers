@@ -246,8 +246,15 @@ def print_recording_code():
         elif attachment_direction == -1:
             print("    left_attachement.run_time(-ATTACHMENT_SPEED, {0})".format(duration_ms))
         else:
-            print("    left_attachement.stop()")
-        print("    wait(ACTION_SETTLE_MS)")
+            print("    left_attachment.stop()")
+        if right_attachment_direction:
+            print("    right_attachment.run_time({0}, {1}, wait=False)".format(
+                ATTACHMENT_SPEED * right_attachment_direction, duration_ms
+            ))
+        else:
+            print("    right_attachment.stop()")
+        print("    while not drivebase.done() or not left_attachment.done() or not right_attachment.done():")
+        print("        wait(10)")
 
     print("    drivebase.stop()")
     print("    left_attachment.stop()")

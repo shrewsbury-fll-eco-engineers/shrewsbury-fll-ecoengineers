@@ -18,12 +18,8 @@ from pybricks.tools import wait, StopWatch
 
 def mission_two(r: robot):
     print("Running Mission 2")
-    r.robot.straight(150)
-    r.robot.turn(43)
-    r.lam.run_angle(300, 120)
-    r.robot.straight(225)
-    r.lam.run_angle(300, -120)
-    r.robot.straight(-500)
+    # Your code goes here...
+
 ################################
 # KEEP THIS AT THE END OF THE FILE
 # This redirects to running main.
