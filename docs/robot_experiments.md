@@ -142,6 +142,63 @@ That's **93% less drift!** Over 3 meters of driving, the robot is now only off b
 
 ---
 
+## Experiment 7: Fixing record and replay
+
+**Problem:** The Xbox controller can **record** a path you drive and **replay** it. But the replay did not follow the path you drove.
+
+**Clue 1:** After turning, when you drove forward or backward, the robot **turned back** toward its old direction by itself.
+
+**Test:** Turn right 45°, then back up, and watch the gyro.
+
+| Version | Robot turned while backing up |
+|---|---|
+| Old code | −46° (it undid the whole turn!) |
+| Fixed code | 0.2° ✅ |
+
+**Why:** Every time you started driving, the code "reset" the robot's direction to zero. With gyro steering on, the robot then tried to point back to its *old* zero direction.
+
+**Clue 2:** When you let go of the D-pad, the robot keeps rolling a few millimeters, about 6 mm. The recording saved that roll as part of the "stop", and replay ignored it, so every move came up short.
+
+**Fixes:**
+- Don't reset the direction when starting to drive.
+- Add the rolling-after-release to the move before it.
+- Measure turns with the **gyro** instead of guessing from the wheels.
+- Before each replayed move, start from where the robot really is.
+- Make the printed mission code complete, so it can be pasted into a mission file.
+
+**Result:** You drove a path with 17 moves using the Xbox controller, then replayed it:
+
+| Moves | Worst difference |
+|---|---|
+| 9 straight drives | 1.3 mm (on a 562 mm drive!) |
+| 8 turns | 1.8° |
+
+**Lesson:** If one part of the code (the reset) fights another part (the gyro), the robot does something nobody asked for. Test each piece by itself to find which one is the problem.
+
+---
+
+## Experiment 8: The gyro was a little bit wrong
+
+**Problem:** Straight lines were very accurate, but turns looked wrong on the floor, even though the gyro said every turn was perfect.
+
+**Why:** Every hub's gyro is slightly different. Ours counted a little too fast, so it thought it had finished turning before it really had.
+
+**Test:** We lined the robot up with a tape line and told it to spin **5 full turns** (1800°). Five turns make a tiny error big enough to see.
+
+| Try | Gyro setting | Where it stopped |
+|---|---|---|
+| 1 | 360 (not calibrated) | about 15° short |
+| 2 | 362.9 | 3–4° short |
+| 3 | 363.6 | 2° short |
+| 4 | 363.9 | a bit too far |
+| 5 | **363.7** | lined up ✅ |
+
+**Fix:** We saved **363.7** as lucky-chicken-2's gyro correction in `robot.py`. Now 1 real turn = 360° on the gyro.
+
+**Lesson:** A sensor can be *consistent* and still be *wrong*. Check it against something real, like a tape line on the floor.
+
+---
+
 ## Final robot settings
 
 | Setting | Value | Why |
@@ -150,7 +207,8 @@ That's **93% less drift!** Over 3 meters of driving, the robot is now only off b
 | Right drive motor | Port F | Found by the port test |
 | Attachment motors | Ports A and E | Found by the port test |
 | Wheel size | 56 mm | Printed on the tire |
-| Axle track | 113 mm | Calculated from the gyro, matches the ruler |
+| Wheels | 56 x 28 mm black | Wider tires grip better: almost no slipping on turns |
+| Axle track | 114 mm | We tested 104 to 119 mm; at 114 the wheels' turn count matches the gyro. A ruler says 119 mm, but wide tires turn as if the wheels were a bit closer together (blue 56 x 14 wheels need 113 mm) |
 | Gyro steering | On, strength ×8 | Cut drift from 42 mm to 3 mm |
 
 **Remember:** `straight(+)` = forward, `turn(+)` = right.
