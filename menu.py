@@ -63,8 +63,8 @@ def menu(r: robot):
         mission_eight(r)
     elif selected == "9":
         mission_nine(r)
-    elif selected == 12:
-        mission_twelve(r)
+    # elif selected == 12:
+    #     mission_twelve(r)
     elif selected == 15:
         mission_fifteen(r)
     elif selected == 16:
