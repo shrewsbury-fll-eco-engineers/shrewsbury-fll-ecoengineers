@@ -43,7 +43,7 @@
         "ble",
         "--name",
         "lucky-chicken-2",
-        "${workspaceFolder}/mission_two.py"
+        "${workspaceFolder}/mission_four.py"
       ]
     },
     {
@@ -58,7 +58,7 @@
         "ble",
         "--name",
         "lucky-chicken-3",
-        "${workspaceFolder}/xbox_controller.py"
+        "${workspaceFolder}/mission_seven.py"
       ]
     },
     {

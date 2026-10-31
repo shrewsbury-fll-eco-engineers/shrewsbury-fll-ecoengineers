@@ -29,9 +29,9 @@ def mission_seven(r: robot):
     r.robot.straight(-150)
     r.ram.run_time(40,1000)
     r.robot.straight(-150)
-    r.robot.turn(-14.7)
+    r.robot.turn(-14.85)
     r.robot.settings(straight_speed=400, turn_rate=TURN_RATE)
-    r.robot.straight(660)
+    r.robot.straight(650)
 
     r.lam.run_time(-150,2750)
     r.robot.straight(-200)

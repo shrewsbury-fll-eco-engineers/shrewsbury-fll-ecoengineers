@@ -20,7 +20,8 @@ def mission_four(r: robot):
     print("Running Mission 4")
     # Your code goes here...
     # Sample code: Test the speaker
-    r.robot.straight(1650)
+    r.robot.settings(straight_speed=480, straight_acceleration=1500, turn_rate=120)
+    r.robot.straight(2000)
     #r.robot.drive(0,10)
     #r.ram.run_time(-270,5000)
     #r.robot.stop()
