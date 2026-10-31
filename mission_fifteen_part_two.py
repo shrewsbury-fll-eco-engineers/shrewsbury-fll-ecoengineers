@@ -18,6 +18,7 @@ from pybricks.tools import wait, StopWatch
 
 def mission_fifteen_part_two(r: robot):
     print("Running Mission 15 part 2")
+    
     r.robot.straight(150)
     r.robot.turn(-50)
     r.robot.straight(590)

@@ -35,14 +35,15 @@ def menu(r: robot):
     from mission_seven import mission_seven
     from mission_eight import mission_eight
     from mission_nine import mission_nine
+    from mission_twelve import mission_twelve
     from mission_fifteen import mission_fifteen
     from mission_fifteen_part_two import mission_fifteen_part_two
     # Change the ordering based on the orientation so the arrow 
     # selections make sense.
     if r.display_orientation == Side.BOTTOM or r.display_orientation == Side.LEFT:
-        selected = hub_menu("1", 16, 15, "9", "8", "7", "6", "5", "4", "3", "2")
+        selected = hub_menu("1", 16, 15, 12, "9", "8", "7", "6", "5", "4", "3", "2")
     else:
-        selected = hub_menu("1", "2", "3", "4", "5", "6", "7", "8", "9", 15, 16) 
+        selected = hub_menu("1", "2", "3", "4", "5", "6", "7", "8", "9", 12, 15, 16) 
     # Based on the selection, run a program.
     if selected == "1":
         mission_one(r)
@@ -62,6 +63,8 @@ def menu(r: robot):
         mission_eight(r)
     elif selected == "9":
         mission_nine(r)
+    elif selected == 12:
+        mission_twelve(r)
     elif selected == 15:
         mission_fifteen(r)
     elif selected == 16:
