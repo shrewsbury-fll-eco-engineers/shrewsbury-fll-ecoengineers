@@ -20,9 +20,9 @@ def mission_four(r: robot):
     print("Running Mission 4")
     # Your code goes here...
     # Sample code: Test the speaker
-    r.robot.straight(-740)
+    r.robot.straight(1650)
     #r.robot.drive(0,10)
-    r.ram.run_time(-270,5000)
+    #r.ram.run_time(-270,5000)
     #r.robot.stop()
 ################################
 # KEEP THIS AT THE END OF THE FILE
