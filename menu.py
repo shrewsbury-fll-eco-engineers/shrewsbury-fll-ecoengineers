@@ -35,7 +35,7 @@ def menu(r: robot):
     from mission_seven import mission_seven
     from mission_eight import mission_eight
     from mission_nine import mission_nine
-    from mission_twelve import mission_twelve
+    #from mission_twelve import mission_twelve
     from mission_fifteen import mission_fifteen
     from mission_fifteen_part_two import mission_fifteen_part_two
     # Change the ordering based on the orientation so the arrow
