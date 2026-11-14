@@ -761,6 +761,20 @@
       </div>
     </section>
 
+    <section class="card harvest-card" aria-labelledby="population-title">
+      <div class="harvest-head">
+        <h2 id="population-title">Bee population over time</h2>
+        <span>Model bees by season</span>
+      </div>
+      <div class="chart-section">
+        <div class="chart-heading">
+          <h3>Population history</h3>
+          <span>Advance seasons to see how the population changes</span>
+        </div>
+        <div class="chart-wrap" id="population-chart"></div>
+      </div>
+    </section>
+
     <div class="takeaway" role="status">
       <span class="takeaway-icon" aria-hidden="true">✿</span>
       <div id="takeaway-text"><strong>Try an experiment:</strong> lower pesticide use, then advance a few seasons. Watch the bee population, pollination, and harvest change together.</div>
@@ -780,6 +794,7 @@
       const cropColors = ["#df7956", "#9a78b5", "#d19b38", "#4c8a53"];
       const state = { ...initial, timer: null };
       const history = [];
+      const populationHistory = [];
       const $ = (id) => document.getElementById(id);
       const pesticideSlider = $("pesticide");
 
@@ -868,6 +883,68 @@
         `;
       }
 
+      function renderPopulationChart() {
+        const entry = { season: state.season, bees: state.bees };
+        const lastEntry = populationHistory[populationHistory.length - 1];
+        if (lastEntry && lastEntry.season === state.season) {
+          populationHistory[populationHistory.length - 1] = entry;
+        } else {
+          populationHistory.push(entry);
+        }
+
+        const visibleHistory = populationHistory.slice(-12);
+        const width = 760;
+        const height = 270;
+        const left = 64;
+        const right = 744;
+        const top = 18;
+        const bottom = 216;
+        const plotWidth = right - left;
+        const plotHeight = bottom - top;
+        const xFor = (index) => left + (visibleHistory.length === 1
+          ? plotWidth / 2
+          : plotWidth * index / (visibleHistory.length - 1));
+        const yFor = (value) => bottom - value / 1000 * plotHeight;
+        const yTicks = [0, 250, 500, 750, 1000];
+        const labelStep = Math.max(1, Math.ceil((visibleHistory.length - 1) / 5));
+        const xLabelIndices = visibleHistory
+          .map((_, index) => index)
+          .filter((index) => index % labelStep === 0 || index === visibleHistory.length - 1);
+        const grid = yTicks.map((tick) => `
+          <line class="chart-grid" x1="${left}" y1="${yFor(tick)}" x2="${right}" y2="${yFor(tick)}"></line>
+          <text class="chart-axis" x="${left - 9}" y="${yFor(tick) + 4}" text-anchor="end">${tick.toLocaleString()}</text>
+        `).join("");
+        const xLabels = xLabelIndices.map((index) => `
+          <text class="chart-axis" x="${xFor(index)}" y="${bottom + 21}" text-anchor="middle">
+            ${visibleHistory[index].season}
+          </text>
+        `).join("");
+        const points = visibleHistory.map((item, index) =>
+          `${xFor(index)},${yFor(item.bees)}`
+        ).join(" ");
+        const dots = visibleHistory.map((item, index) => `
+          <circle class="chart-point" cx="${xFor(index)}" cy="${yFor(item.bees)}" r="4" fill="#d19b38">
+            <title>Season ${item.season}: ${item.bees.toLocaleString()} bees</title>
+          </circle>
+        `).join("");
+
+        $("population-chart").innerHTML = `
+          <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Line graph of bee population by season">
+            <text class="chart-axis" x="${left}" y="11">Bees</text>
+            ${grid}
+            <line class="chart-grid" x1="${left}" y1="${top}" x2="${left}" y2="${bottom}"></line>
+            <line class="chart-grid" x1="${left}" y1="${bottom}" x2="${right}" y2="${bottom}"></line>
+            <polyline class="chart-series" stroke="#d19b38" points="${points}"></polyline>
+            ${dots}
+            ${xLabels}
+            <text class="chart-axis" x="${(left + right) / 2}" y="${height - 5}" text-anchor="middle">Season</text>
+          </svg>
+          <div class="chart-legend" aria-hidden="true">
+            <span class="chart-legend-item"><i class="chart-key" style="background:#d19b38"></i>Bee population</span>
+          </div>
+        `;
+      }
+
       function render() {
         const pollination = clamp(state.bees / 1000, 0, 1);
         const harvests = crops.map((crop) => {
@@ -896,6 +973,7 @@
           bee.classList.toggle("is-hidden", index >= visibleBees);
         });
         renderChart(harvests);
+        renderPopulationChart();
 
         const target = populationTarget();
         const trend = target > state.bees + 20
@@ -945,6 +1023,7 @@
         state.bees = initial.bees;
         state.season = initial.season;
         history.length = 0;
+        populationHistory.length = 0;
         pesticideSlider.value = String(initial.pesticide);
         render();
       });

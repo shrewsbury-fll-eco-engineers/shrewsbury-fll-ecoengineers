@@ -58,7 +58,7 @@
         "ble",
         "--name",
         "lucky-chicken-3",
-        "${workspaceFolder}/mission_seven.py"
+        "${workspaceFolder}/menu.py"
       ]
     },
     {
