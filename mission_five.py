@@ -63,6 +63,7 @@ def mission_five(r: robot):
     r.robot.turn(10)
     r.robot.straight(-50)
     r.ram.run_angle(100, 90)
+    r.lam.run_angle (40,90)
     r.robot.straight(-240)
     r.robot.turn(45)
     r.robot.straight(-300)
