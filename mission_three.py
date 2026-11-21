@@ -19,62 +19,18 @@ from pybricks.tools import wait
 
 def mission_three(r: robot):
     print("Running Mission 3")
-    drivebase = r.robot
-    left_attachment = r.lam
-    right_attachment = r.ram
-    drivebase.settings(straight_speed=STRAIGHT_SPEED, turn_rate=TURN_RATE)
-    left_attachment.stop()
-    right_attachment.stop()
-
-    drivebase.stop()
-    left_attachment.stop()
-    right_attachment.stop()
-    while not drivebase.done() or not left_attachment.done() or not right_attachment.done():
-        wait(10)
-    drivebase.straight(492.4, wait=False)
-    left_attachment.stop()
-    right_attachment.stop()
-    while not drivebase.done() or not left_attachment.done() or not right_attachment.done():
-        wait(10)
-    drivebase.stop()
-    left_attachment.stop()
-    right_attachment.stop()
-    while not drivebase.done() or not left_attachment.done() or not right_attachment.done():
-        wait(10)
-    drivebase.straight(-70.1, wait=False)
-    left_attachment.stop()
-    right_attachment.stop()
-    while not drivebase.done() or not left_attachment.done() or not right_attachment.done():
-        wait(10)
-    drivebase.stop()
-    left_attachment.stop()
-    right_attachment.stop()
-    while not drivebase.done() or not left_attachment.done() or not right_attachment.done():
-        wait(10)
-    drivebase.straight(112.6, wait=False)
-    left_attachment.stop()
-    right_attachment.stop()
-    while not drivebase.done() or not left_attachment.done() or not right_attachment.done():
-        wait(10)
-    drivebase.stop()
-    left_attachment.stop()
-    right_attachment.stop()
-    while not drivebase.done() or not left_attachment.done() or not right_attachment.done():
-        wait(10)
-    drivebase.straight(-306.4, wait=False)
-    left_attachment.stop()
-    right_attachment.stop()
-    while not drivebase.done() or not left_attachment.done() or not right_attachment.done():
-        wait(10)
-    drivebase.stop()
-    left_attachment.stop()
-    right_attachment.stop()
-    while not drivebase.done() or not left_attachment.done() or not right_attachment.done():
-        wait(10)
-    drivebase.stop()
-    left_attachment.stop()
-    right_attachment.stop()
-
+    r.robot.use_gyro(True)
+    r.robot.settings(straight_speed=400, straight_acceleration=500, turn_rate=120, turn_acceleration=240)
+    r.robot.straight(450)
+    r.robot.straight(-100)
+    r.robot.straight(100)
+    r.robot.turn(-7.5)
+    r.robot.straight(-100)
+    r.robot.straight(100)
+    r.robot.turn(10)
+    r.robot.straight(-100)
+    r.robot.straight(100)
+    r.robot.straight(-700)
 ################################
 # KEEP THIS AT THE END OF THE FILE
 # This redirects to running main.
