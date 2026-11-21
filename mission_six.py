@@ -56,9 +56,9 @@ def mission_six(r: robot):
     r.robot.straight(10)
     r.robot.turn(-5)
     wait(1000)
-    r.ram.run_angle(50, 100)
+    r.ram.run_angle(50, 50)
     r.robot.straight(-50)
-    r.ram.run_angle(500, -180)
+    r.ram.run_angle(500, -130)
     #mission 6
     r.robot.straight(-10)
     r.robot.turn(70)
