@@ -33,10 +33,10 @@ def menu(r: robot):
     from mission_five import mission_five
     from mission_six import mission_six
     from mission_seven import mission_seven
-    from mission_eight import mission_eight
-    from mission_nine import mission_nine
-    from mission_fifteen import mission_fifteen
-    from mission_fifteen_part_two import mission_fifteen_part_two
+    #from mission_eight import mission_eight
+    #from mission_nine import mission_nine
+    #from mission_fifteen import mission_fifteen
+    #from mission_fifteen_part_two import mission_fifteen_part_two
     # Missions in run order: (menu label, function).
     # The menu opens on the first entry, and after each mission it moves
     # to the next one, so this list IS the match run order.
@@ -50,11 +50,11 @@ def menu(r: robot):
         ("1", mission_one),
         ("5", mission_five),
         ("3", mission_three),
-        ("2", mission_two),
-        ("8", mission_eight),
-        ("9", mission_nine),
-        (15, mission_fifteen),
-        (16, mission_fifteen_part_two),
+        #("2", mission_two),
+        #("8", mission_eight),
+        #("9", mission_nine),
+        #(15, mission_fifteen),
+        #(16, mission_fifteen_part_two),
     ]
     labels = [label for label, _ in missions]
     reversed_display = (

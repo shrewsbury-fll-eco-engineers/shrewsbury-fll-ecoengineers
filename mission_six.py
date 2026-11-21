@@ -38,8 +38,7 @@ def mission_six(r: robot):
 
 
     #New Code, mission was backward
-    #mission 11
-    r.robot.settings (400, 800, 120, 240)
+    r.robot.settings (500, 1000, 120, 240)
     r.robot.straight(100)
     r.robot.turn(-50)
     r.robot.straight(500)
@@ -56,26 +55,31 @@ def mission_six(r: robot):
     r.robot.straight(10)
     r.robot.turn(-5)
     wait(1000)
-    r.ram.run_angle(50, 50)
+    r.ram.run_angle(50, 30)
     r.robot.straight(-50)
-    r.ram.run_angle(500, -130)
+    r.ram.run_angle(1000, -130)
     #mission 6
     r.robot.straight(-10)
     r.robot.turn(70)
-    r.robot.straight(120)
-    r.robot.turn(35)
-    r.robot.straight(165)
-    r.robot.turn(35)
+    #Trying out a arc move for this 
+    r.robot.arc(391, angle=41)
+    r.robot.turn(30)
+    #r.robot.straight(120)
+    #r.robot.turn(35)
+    #r.robot.straight(165)
+    #r.robot.turn(35)
+    r.robot.straight(90)
     r.robot.settings(70, 140, 120, 240)
-    r.robot.straight(200)
+    r.robot.straight(90)
     r.robot.settings(700,1400,120,240)
     r.robot.straight(-50)
     r.robot.turn(-80)
+    # Mission #11
     r.robot.straight(-500)
     r.robot.turn(160)
-    r.robot.straight(500)
-    
+    r.robot.arc(400, angle=60)
 
+    
 # KEEP THIS AT THE END OF THE FILE
 # This redirects to running main.
 ################################
