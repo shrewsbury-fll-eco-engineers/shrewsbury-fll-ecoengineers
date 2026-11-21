@@ -13,7 +13,7 @@
         "ble",
         "--name",
         "Lucky Chicken",
-        "${workspaceFolder}/mission_five.py"
+        "${workspaceFolder}/main.py"
       ]
     },
     {
@@ -28,7 +28,7 @@
         "ble",
         "--name",
         "lucky-chicken-2",
-        "${workspaceFolder}/xbox_controller.py"
+        "${workspaceFolder}/main.py"
       ]
     },
     {
@@ -43,7 +43,7 @@
         "ble",
         "--name",
         "lucky-chicken-2",
-        "${workspaceFolder}/mission_four.py"
+        "${workspaceFolder}/main.py"
       ]
     },
     {
@@ -58,11 +58,7 @@
         "ble",
         "--name",
         "lucky-chicken-3",
-<<<<<<< HEAD
         "${workspaceFolder}/main.py"
-=======
-        "${workspaceFolder}/menu.py"
->>>>>>> 692d2d43cb7517130c06e4d89a7378caac0b507e
       ]
     },
     {
