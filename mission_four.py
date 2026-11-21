@@ -20,8 +20,21 @@ def mission_four(r: robot):
     print("Running Mission 4")
     # Your code goes here...
     # Sample code: Test the speaker
-    r.robot.settings(straight_speed=480, straight_acceleration=1500, turn_rate=120)
-    r.robot.straight(2000)
+    # Run as fast as the drive motors allow.
+    # Read this hub's real motor speed limit (deg/s) instead of guessing,
+    # and convert it to mm/s for the 56 mm wheels (pi * 56 / 360 mm per deg).
+    motor_max_deg_s = r.ldm.control.limits()[0]
+    top_speed = int(motor_max_deg_s * 3.14159 * 56 / 360)
+    # Acceleration 2000 -> 3000 mm/s^2: reaching top speed sooner saves the
+    # most time. If the wheels slip or the robot veers at the start,
+    # lower this back toward 2000.
+    r.robot.settings(straight_speed=top_speed, straight_acceleration=3000, turn_rate=120)
+    print("Mission 4 top speed:", top_speed, "mm/s")
+
+    # Distance 2300 mm (was 2000 before +300 mm). Timed so we can compare runs.
+    timer = StopWatch()
+    r.robot.straight(2300)
+    print("Mission 4 drive time:", timer.time(), "ms")
     #r.robot.drive(0,10)
     #r.ram.run_time(-270,5000)
     #r.robot.stop()
