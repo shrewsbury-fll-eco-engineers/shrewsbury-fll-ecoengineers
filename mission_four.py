@@ -33,8 +33,12 @@ def mission_four(r: robot):
 
     # Distance 2300 mm (was 2000 before +300 mm). Timed so we can compare runs.
     timer = StopWatch()
-    r.robot.straight(2300)
-    print("Mission 4 drive time:", timer.time(), "ms")
+    r.robot.straight(950)
+    r.robot.arc(100, 180)
+    r.robot.straight(-1000)
+
+   # r.robot.straight(2300)
+   # print("Mission 4 drive time:", timer.time(), "ms")
     #r.robot.drive(0,10)
     #r.ram.run_time(-270,5000)
     #r.robot.stop()
